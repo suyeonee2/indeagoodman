@@ -1,11 +1,15 @@
+import { testimonialsAnimation } from 'animation'
+import { motion } from 'framer-motion'
 import React, {useState} from 'react'
 import styled from 'styled-components'
 import placeholder from '../assets/placeholder.png'
 import testimonial1 from '../assets/testimonial1.png'
 import testimonial2 from '../assets/testimonial2.png'
+import { useScroll } from './useScroll'
 
 function Testmonials() {
   const [selected, setSelected] = useState(0);
+  const [element, controls] = useScroll();
   const testimonials = [
     {
       designation : "Desinger",
@@ -25,7 +29,7 @@ function Testmonials() {
   ]
 
   return (
-    <Section>
+    <Section ref={element}>
       <div className="background">
         <img src={testimonial1} alt="background design" className='design1'/>
         <img src={testimonial2} alt="background design" className='design2'/>
@@ -34,11 +38,17 @@ function Testmonials() {
         <div className="testimonials">
         {testimonials.map((testimonial, index) => {
             return (
-              <div
+              <motion.div
                 className={`testimonial ${
                   selected === index ? "active" : "hidden"
                 }`}
                 key={index}
+                variants={testimonialsAnimation} animate={controls}
+                transition={{
+                  delay:0.03,
+                  type:"tween",
+                  duration:0.8,
+                }}
               >
                 <div className="image">
                   <div className="circle1"></div>
@@ -51,11 +61,17 @@ function Testmonials() {
                   <h3 className="title">{testimonial.name}</h3>
                 </div>
                 <p className="description">{testimonial.review}</p>
-              </div>
+              </motion.div>
             );
           })}
         </div>
-        <div className="controls">
+        <motion.div className="controls"
+              variants={testimonialsAnimation} animate={controls}
+              transition={{
+                delay:0.03,
+                type:"tween",
+                duration:0.8,
+              }}>
           <button
             className={selected === 0 ? "active" : ""}
             onClick={() => {
@@ -70,7 +86,7 @@ function Testmonials() {
             className={selected === 2 ? "active" : ""}
             onClick={() => setSelected(2)}
           ></button>
-      </div>
+      </motion.div>
       </div>
     </Section>
   )

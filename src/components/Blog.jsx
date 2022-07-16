@@ -3,8 +3,13 @@ import placeholder from '../assets/placeholder.png'
 import play from '../assets/play.png'
 import styled from 'styled-components'
 import Title from './Title'
+import { motion } from 'framer-motion'
+import { useScroll } from './useScroll'
+import { blogsAnimations } from 'animation'
+
 
 function Blog() {
+  const [element, controls] = useScroll();
   const blogsData = [
     {
       title: "Summer trip to mountains",
@@ -23,13 +28,20 @@ function Blog() {
     },
   ];
   return (
-    <Section id="blog">
+    <Section id="blog" ref={element}>
       <Title value="blog"/>
       <div className="decoration"></div>
         <div className="blogs">
           {blogsData.map(({title,type,description})=> {
               return (
-                <div className="blog">
+                <motion.div className="blog" 
+                variants={blogsAnimations} animate={controls}
+                transition={{
+                  delay:0.03,
+                  type:"tween",
+                  duration:0.8,
+                }}
+                >
                   <div className="image">
                     <img src={placeholder} alt="Placeholder" />
                   </div>
@@ -44,7 +56,7 @@ function Blog() {
                     <img src={play} alt="play" />
                     <span>Read More</span>
                   </div>
-                </div>
+                </motion.div>
               );
             })
            }
